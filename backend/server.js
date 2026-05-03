@@ -23,14 +23,17 @@ app.use('/api/applications', applicationRoutes);
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'AI Resume Platform running ✅' }));
 
-// Serve frontend static files in production
-const frontendBuildPath = path.join(__dirname, '..', 'frontend', 'build');
-app.use(express.static(frontendBuildPath));
-
-// Catch-all route to serve React's index.html for client-side routing
-app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendBuildPath, 'index.html'));
-});
+// Serve frontend static files in production (only if NOT on Vercel)
+// Vercel handles static serving and routing via vercel.json
+if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
+  const frontendBuildPath = path.join(__dirname, '..', 'frontend', 'build');
+  app.use(express.static(frontendBuildPath));
+  
+  // Catch-all route to serve React's index.html for client-side routing
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+}
 
 // Error handler
 app.use((err, req, res, next) => {

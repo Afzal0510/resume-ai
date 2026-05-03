@@ -6,3 +6,5 @@ build
 uploads/
 frontend/build/
 backend/uploads/
+
+.vercel
