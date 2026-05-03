@@ -6,8 +6,9 @@
       "use": "@vercel/node"
     },
     {
-      "src": "frontend/build/**",
-      "use": "@vercel/static"
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
     }
   ],
   "routes": [
@@ -16,20 +17,16 @@
       "dest": "backend/server.js"
     },
     {
-      "src": "/uploads/(.*)",
-      "dest": "backend/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/build/$1",
-      "continue": true
-    },
-    {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "frontend/build/index.html"
+      "dest": "/$1",
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
