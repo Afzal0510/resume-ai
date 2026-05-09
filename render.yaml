@@ -15,7 +15,7 @@ services:
     rootDirectory: backend
 
   # Frontend Static Site
-  - type: static_site
+  - type: static
     name: resume-ai-frontend
     env: static
     plan: free
