@@ -57,7 +57,7 @@ export default function UploadResume() {
         try {
           const formData = new FormData();
           formData.append('resume', fileToProcess);
-          const { data } = await axios.post('/api/resume/upload', formData, {
+          const { data } = await api.post('/api/resume/upload', formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           });
           clearInterval(timer);
@@ -110,7 +110,7 @@ export default function UploadResume() {
     try {
       const formData = new FormData();
       formData.append('resume', fileToSubmit);
-      const { data } = await axios.post('/api/resume/upload', formData, {
+      const { data } = await api.post('/api/resume/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       clearInterval(timer);

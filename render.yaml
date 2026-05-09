@@ -27,7 +27,7 @@ services:
         fromService:
           type: web
           name: resume-ai-backend
-          property: host
+          property: url
     rootDirectory: frontend
     routes:
       - type: rewrite
