@@ -5,6 +5,7 @@ services:
     env: node
     plan: free
     region: singapore
+    rootDirectory: backend
     buildCommand: npm install
     startCommand: npm start
     envVars:
@@ -12,14 +13,14 @@ services:
         value: production
       - key: ANTHROPIC_API_KEY
         sync: false
-    rootDirectory: backend
 
-  # Frontend Static Site
+  # Frontend Service (Static Site)
   - type: static_site
     name: resume-ai-frontend
     env: static
     plan: free
     region: singapore
+    rootDirectory: frontend
     buildCommand: npm install && npm run build
     publishPath: build
     envVars:
@@ -28,7 +29,6 @@ services:
           type: web
           name: resume-ai-backend
           property: url
-    rootDirectory: frontend
     routes:
       - type: rewrite
         source: /*
