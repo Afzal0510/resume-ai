@@ -1,36 +1,29 @@
 services:
-  # Backend Service
-  - type: web
-    name: resume-ai-backend
+- type: web
+  name: resume-ai-backend
     env: node
-    plan: free
-    region: singapore # Or choose your preferred region
-    buildCommand: npm install
-    startCommand: npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: ANTHROPIC_API_KEY
-        sync: false # User will need to set this in Render dashboard
-      - fromGroup: common-env
-    rootDirectory: backend
-
-  # Frontend Static Site
-- type: static_site
-    name: resume-ai-frontend
-    env: static
-    plan: free
-    region: singapore
-    buildCommand: npm install && npm run build
-    publishPath: build
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: resume-ai-backend
-          property: host
-    rootDirectory: frontend
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      plan: free
+        region: singapore
+          buildCommand: npm install
+            startCommand: npm start
+              envVars:
+                  - key: NODE_ENV
+                        value: production
+                            - key: ANTHROPIC_API_KEY
+                                  sync: false
+                                    rootDirectory: backend
+                                    - type: static_site
+                                      name: resume-ai-frontend
+                                        env: static
+                                          plan: free
+                                            region: singapore
+                                              buildCommand: npm install && npm run build
+                                                publishPath: build
+                                                  envVars:
+                                                      - key: REACT_APP_API_URL
+                                                            fromService:
+                                                                    type: web
+                                                                            name: resume-ai-backend
+                                                                                    property: host
+                                                                                      rootDirectory: frontend
+                                                                                      
