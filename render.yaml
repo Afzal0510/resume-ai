@@ -1,34 +1,36 @@
 services:
-  # Backend Service
+  # Backend Service (Node.js / Express)
   - type: web
     name: resume-ai-backend
     env: node
     plan: free
     region: singapore
+
     rootDirectory: backend
+
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node server.js
+
     envVars:
       - key: NODE_ENV
         value: production
+
+      # Set your real Anthropic API key in the Render dashboard
       - key: ANTHROPIC_API_KEY
         sync: false
 
-  # Frontend Service (Static Site)
-  - type: static_site
+  # Frontend Service (Create React App → static site)
+  - type: web
     name: resume-ai-frontend
     env: static
     plan: free
     region: singapore
+
     rootDirectory: frontend
-    buildCommand: npm install && npm run build
-    publishPath: build
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: resume-ai-backend
-          property: url
+
+    buildCommand: npm install && REACT_APP_API_URL=https://resume-ai-backend.onrender.com npm run build
+    staticPublishPath: ./build
+
     routes:
       - type: rewrite
         source: /*
