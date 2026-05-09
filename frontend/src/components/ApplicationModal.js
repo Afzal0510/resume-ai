@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import './ApplicationModal.css';
 
 export default function ApplicationModal({ job, profile, onClose }) {
@@ -36,7 +36,7 @@ export default function ApplicationModal({ job, profile, onClose }) {
     if (Object.keys(e).length > 0) { setErrors(e); return; }
     setLoading(true);
     try {
-      await axios.post('/api/applications/apply', { jobId: job.id, jobTitle: job.title, company: job.company, ...form });
+      await api.post('/api/applications/apply', { jobId: job.id, jobTitle: job.title, company: job.company, ...form });
       setSuccess(true);
     } catch (err) {
       setErrors({ submit: err.response?.data?.errors?.[0]?.msg || 'Submission failed. Please try again.' });

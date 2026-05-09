@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Link, useNavigate } from 'react-router-dom';
 import './AllJobs.css';
 
@@ -18,7 +18,7 @@ export default function AllJobs() {
     if (search) params.append('search', search);
     if (category) params.append('category', category);
     if (remoteOnly) params.append('remote', 'true');
-    axios.get(`/api/jobs?${params}`).then(r => { setJobs(r.data.jobs); setLoading(false); });
+    api.get(`/api/jobs?${params}`).then(r => { setJobs(r.data.jobs); setLoading(false); });
   }, [search, category, remoteOnly]);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import ApplicationModal from '../components/ApplicationModal';
 
 export default function JobDetail() {
@@ -9,7 +9,7 @@ export default function JobDetail() {
   const [applying, setApplying] = useState(false);
 
   useEffect(() => {
-    axios.get(`/api/jobs/${id}`).then(r => setJob(r.data)).catch(() => setJob(null));
+    api.get(`/api/jobs/${id}`).then(r => setJob(r.data)).catch(() => setJob(null));
   }, [id]);
 
   if (!job) return (
