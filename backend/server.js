@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:3000',
   'https://resume-ai-frontend.onrender.com',
+  'https://resume-ai-frontend-m7j5.onrender.com',
 ];
 app.use(cors({
   origin: (origin, callback) => {

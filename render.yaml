@@ -4,7 +4,7 @@ services:
     name: resume-ai-backend
     env: node
     plan: free
-    region: singapore
+    region: oregon
 
     rootDirectory: backend
 
@@ -24,11 +24,11 @@ services:
     name: resume-ai-frontend
     env: static
     plan: free
-    region: singapore
+    region: oregon
 
     rootDirectory: frontend
 
-    buildCommand: npm install && REACT_APP_API_URL=https://resume-ai-backend.onrender.com npm run build
+    buildCommand: npm install && REACT_APP_API_URL=https://resume-ai-backend-m7j5.onrender.com npm run build
     staticPublishPath: ./build
 
     routes:
