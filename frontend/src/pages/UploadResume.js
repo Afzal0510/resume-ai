@@ -63,8 +63,9 @@ export default function UploadResume() {
           clearInterval(timer);
           setProgress(100);
           setStage('✅ Analysis complete!');
+          const previewUrl = typeof window !== 'undefined' ? URL.createObjectURL(fileToProcess) : '';
           setTimeout(() => {
-            navigate('/matches', { state: { result: data } });
+            navigate('/matches', { state: { result: data, uploadedFile: fileToProcess, previewUrl } });
           }, 600);
         } catch (err) {
           clearInterval(timer);
@@ -103,6 +104,20 @@ export default function UploadResume() {
     return interval;
   };
 
+  const persistAnalysisResult = (dataToSave, fileToSave, previewUrl) => {
+    if (typeof window === 'undefined') return;
+    try {
+      sessionStorage.setItem('resumeAnalysisResult', JSON.stringify({
+        result: dataToSave,
+        uploadedFileName: fileToSave?.name || '',
+        uploadedFileType: fileToSave?.type || '',
+        previewUrl,
+      }));
+    } catch (err) {
+      console.warn('Could not save analysis result:', err);
+    }
+  };
+
   const submitFile = async (fileToSubmit) => {
     setLoading(true); setError(''); setProgress(5); setStage('🔄 Uploading file...');
     const timer = simulateProgress();
@@ -115,8 +130,10 @@ export default function UploadResume() {
       });
       clearInterval(timer);
       setProgress(100); setStage('✅ Analysis complete!');
+      const previewUrl = typeof window !== 'undefined' ? URL.createObjectURL(fileToSubmit) : '';
+      persistAnalysisResult(data, fileToSubmit, previewUrl);
       setTimeout(() => {
-        navigate('/matches', { state: { result: data } });
+        navigate('/matches', { state: { result: data, uploadedFile: fileToSubmit, previewUrl } });
       }, 600);
     } catch (err) {
       clearInterval(timer);
