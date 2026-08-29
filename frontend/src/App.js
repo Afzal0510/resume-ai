@@ -19,11 +19,13 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/index.html" element={<Home />} />
               <Route path="/upload" element={<UploadResume />} />
               <Route path="/matches" element={<JobMatches />} />
               <Route path="/jobs" element={<AllJobs />} />
               <Route path="/jobs/:id" element={<JobDetail />} />
               <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Home />} />
             </Routes>
           </main>
         </div>
