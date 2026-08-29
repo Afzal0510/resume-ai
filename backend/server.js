@@ -14,10 +14,12 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   /^http:\/\/localhost(:\d+)?$/,
   /^http:\/\/127\.0\.0\.1(:\d+)?$/,
+  /^https:\/\/.*\.onrender\.com$/,
   'https://resume-ai-frontend.onrender.com',
   'https://resume-ai-frontend-m7j5.onrender.com',
   'https://resume-ai-frontend-dhg0.onrender.com',
   'https://ai-resume-pro.onrender.com',
+  'https://ai-resume-pro-cmo0.onrender.com',
 ];
 
 app.use(cors({
