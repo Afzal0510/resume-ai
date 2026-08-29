@@ -18,8 +18,20 @@ if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY.trim() !== ''
 // ─── Extract text from uploaded file ──────────────────────────────────────────
 async function extractTextFromFile(buffer, mimetype) {
   if (mimetype === 'application/pdf') {
-    const data = await pdfParse(buffer);
-    return data.text;
+    // Silence internal TrueType font bytecode warnings from pdfjs-dist
+    const originalWarn = console.warn;
+    console.warn = (...args) => {
+      if (typeof args[0] === 'string' && (args[0].includes('TT:') || args[0].includes('undefined function: 21'))) {
+        return;
+      }
+      originalWarn.apply(console, args);
+    };
+    try {
+      const data = await pdfParse(buffer);
+      return data.text;
+    } finally {
+      console.warn = originalWarn;
+    }
   } else if (mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
