@@ -21,7 +21,7 @@ services:
 
   # Frontend Service (Create React App → static site)
   - type: web
-    name: resume-ai-frontend
+    name: ai-resume-pro
     env: static
     plan: free
     region: oregon

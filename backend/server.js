@@ -17,6 +17,7 @@ const allowedOrigins = [
   'https://resume-ai-frontend.onrender.com',
   'https://resume-ai-frontend-m7j5.onrender.com',
   'https://resume-ai-frontend-dhg0.onrender.com',
+  'https://ai-resume-pro.onrender.com',
 ];
 
 app.use(cors({
