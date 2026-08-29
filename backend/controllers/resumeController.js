@@ -292,7 +292,7 @@ function extractSkillsRegex(text) {
     experienceYears,
     skills: found,
     education: 'Not extracted',
-    summary: realSummary || null,
+    summary: null,
     experienceLevel: experienceYears > 5 ? 'senior' : experienceYears > 2 ? 'mid' : experienceYears > 0 ? 'junior' : 'fresher',
     jobTitles: inferredTitle !== 'Professional' ? [inferredTitle] : [],
     certifications: [],
@@ -446,9 +446,7 @@ function extractProfileFields(resumeText, fallbackProfile = {}) {
     github: toText(fallbackProfile.github || githubMatch?.[0]) || null,
     phone: toText(fallbackProfile.phone || phoneMatch) || null,
     email: toText(fallbackProfile.email) || null,
-    summary: (toText(fallbackProfile.summary) && !toText(fallbackProfile.summary).startsWith('Resume parsed successfully'))
-      ? toText(fallbackProfile.summary)
-      : (extractSummaryFromText(text) || null),
+    summary: null,
     skills: fallbackProfile.skills || [],
     experienceYears: fallbackProfile.experienceYears || 0,
     experienceLevel: fallbackProfile.experienceLevel || 'fresher',
