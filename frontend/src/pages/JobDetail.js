@@ -34,10 +34,13 @@ export default function JobDetail() {
                     <span>📍 {job.location}</span>
                     <span>💰 {job.salary}</span>
                     <span>⏱ {job.experience}</span>
-                    {job.remote && <span className="badge badge-green">Remote ✓</span>}
+                    <span className="badge badge-purple">{job.type || 'Full-time'}</span>
+                    <span className={`badge badge-workmode badge-${(job.workMode || (job.remote ? 'Remote' : 'Onsite')).toLowerCase()}`}>
+                      {job.workMode || (job.remote ? 'Remote' : 'Onsite')}
+                    </span>
                   </div>
                 </div>
-                <span className="badge badge-purple">{job.type}</span>
+                <span className="badge badge-purple">{job.type || 'Full-time'}</span>
               </div>
               <div className="divider" />
               <h3 style={{ marginBottom: '0.75rem' }}>About the Role</h3>

@@ -10,19 +10,34 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+// CORS setup
 const allowedOrigins = [
-  'http://localhost:3000',
+  /^http:\/\/localhost(:\d+)?$/,
+  /^http:\/\/127\.0\.0\.1(:\d+)?$/,
   'https://resume-ai-frontend.onrender.com',
   'https://resume-ai-frontend-m7j5.onrender.com',
   'https://resume-ai-frontend-dhg0.onrender.com',
 ];
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. curl / Postman) or whitelisted origins
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-    callback(new Error('Not allowed by CORS'));
+    // Allow requests with no origin (curl, Postman, mobile, same-origin)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    
+    if (isAllowed || process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    
+    console.warn(`[CORS] Blocked request from origin: ${origin}`);
+    callback(null, false);
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
