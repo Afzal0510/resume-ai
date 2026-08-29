@@ -117,7 +117,8 @@ const financeSkillsList = [
   'cfa', 'auditing', 'taxation', 'gst', 'income tax', 'tds', 'tally', 'quickbooks',
   'investment banking', 'mergers acquisitions', 'risk management', 'credit risk',
   'underwriting', 'cost accounting', 'budget planning', 'treasury', 'forex', 'portfolio management',
-  'banking', 'credit analysis'
+  'banking', 'credit analysis', 'invoice processing', 'accounts payable', 'accounts receivable',
+  'reconciliation', 'billing', 'invoicing', 'process compliance', 'financial reporting'
 ];
 
 const salesMarketingSkillsList = [
@@ -223,13 +224,35 @@ function resolveDomain(text, skills = [], jobTitle = '', fallbackDomain = '') {
 // ─── Extract Summary from resume text ──────────────────────────────────────────
 function extractSummaryFromText(resumeText) {
   const text = resumeText || '';
-  const summaryMatch = text.match(/(?:summary|professional summary|about me|profile summary|profile|objective|career objective)[:\s\n\r]+([^\n\r]+(?:\n[^\n\r]+){0,3})/i);
-  if (summaryMatch && summaryMatch[1]) {
-    const candidateSummary = summaryMatch[1].replace(/^(?:resume|experience|skills|education|projects|contact)[:\s]*/i, '').trim();
-    if (candidateSummary.length > 20 && candidateSummary.length < 500) {
-      return candidateSummary;
+
+  // 1. Check for explicit header: Summary, Objective, About Me, Profile
+  const headerMatch = text.match(/(?:summary|professional summary|career summary|about me|profile summary|profile|objective|career objective)[:\s\n\r]+([^\n\r]+(?:\n[^\n\r]+){0,4})/i);
+  if (headerMatch && headerMatch[1]) {
+    const candidate = headerMatch[1]
+      .replace(/^(?:resume|experience|skills|education|projects|contact)[:\s]*/i, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (candidate.length >= 30 && candidate.length <= 600) {
+      return candidate;
     }
   }
+
+  // 2. Check for objective / summary paragraphs in the top portion (first 1500 chars)
+  const topText = text.substring(0, 1500);
+  const paragraphs = topText.split(/(?:\r?\n\s*){2,}/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
+
+  for (const para of paragraphs) {
+    if (para.length < 40 || para.length > 600) continue;
+    // Skip if it contains contact details or header keywords only
+    if (/[@:/]/.test(para) && (para.includes('@') || para.includes('http') || para.includes('phone') || para.includes('linkedin'))) continue;
+    if (/^(?:experience|skills|education|projects|technical skills|certifications)\b/i.test(para)) continue;
+
+    // Check for common summary / objective phrases
+    if (/^(?:to work in|to obtain|to secure|to leverage|seeking|experienced|dedicated|results-driven|passionate|professional with|focused on|motivated|a highly skilled|efficient in|looking for|dynamic)\b/i.test(para) || (para.length >= 60 && para.includes('.'))) {
+      return para;
+    }
+  }
+
   return null;
 }
 
