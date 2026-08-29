@@ -199,9 +199,6 @@ export default function JobMatches() {
                 <span>📍 {getDisplayValue(profile?.location, 'Not Available')}</span>
                 {profile?.experienceLevel && <span className={`badge badge-${profile.experienceLevel === 'fresher' ? 'green' : 'purple'}`}>{profile.experienceLevel}</span>}
               </div>
-              {profile?.summary && !profile.summary.startsWith('Resume parsed successfully') && (
-                <p className="profile-summary">{profile.summary}</p>
-              )}
               <div className="profile-skills">
                 {profileSkills.length > 0 ? (
                   <>
